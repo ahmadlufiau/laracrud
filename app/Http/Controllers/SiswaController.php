@@ -23,7 +23,7 @@ class SiswaController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
-		//
+		// Form Create
 		return view('siswa.create');
 	}
 
@@ -34,7 +34,7 @@ class SiswaController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request) {
-		//
+		// Simpan Data
 		$data = new Siswa();
 		$data->nama = $request->nama;
 		$data->alamat = $request->alamat;
@@ -50,7 +50,9 @@ class SiswaController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show($id) {
-		//
+		// Detail Siswa
+		$data = Siswa::find($id);
+		return view('siswa.lihat', ['data' => $data]);
 	}
 
 	/**
@@ -60,7 +62,9 @@ class SiswaController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit($id) {
-		//
+		// Form Edit Siswa
+		$data = Siswa::where('id', $id)->get();
+		return view('siswa.edit', compact('data'));
 	}
 
 	/**
@@ -71,7 +75,13 @@ class SiswaController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request, $id) {
-		//
+		// Simpan Edit Siswa
+		$data = Siswa::where('id', $id)->first();
+		$data->nama = $request->nama;
+		$data->alamat = $request->alamat;
+		$data->email = $request->email;
+		$data->save();
+		return redirect()->route('siswa.index')->with('alert-success', 'Data berhasil diubah!');
 	}
 
 	/**
@@ -81,7 +91,7 @@ class SiswaController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy($id) {
-		//
+		// delete
 		$data = Siswa::where('id', $id)->first();
 		$data->delete();
 		return redirect()->route('siswa.index')->with('alert-success', 'Data berhasi dihapus!');
